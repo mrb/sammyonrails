@@ -1,0 +1,4 @@
+-@posts.each do |post|
+  %div{:id => "post_#{post.id}", :class => 'post'}
+    .title
+      %a{:href=>"#/posts/#{post.id}"}=post.title

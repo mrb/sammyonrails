@@ -3,7 +3,9 @@ class PostsController < ApplicationController
   
   def index
     @posts = Post.all
-    respond_with(@posts)
+    respond_with(@posts) do |format|
+      format.js { render :layout => false}
+    end
   end
   
   def show

@@ -1,29 +1,38 @@
 (function($) {
   var app = $.sammy(function() {
     this.element_selector = "#home";
-    // This is the body of your application
-    
-    // Home Page Route
-		this.get('#/', function(){
-			
+		
+		this.helpers({
+			clear_right: function(){
+        $("#right").html('');
+      }
+		})
+		
+		this.before(function(){
+			this.clear_right();
+		});
+
+		this.get('#/:model/:id', function(){
+			var model = this.params['model'];
+			var id = this.params['id'];
+			$.get("/"+model+"/"+id+'.js',function(response){
+				$("#right").html(response);
+			});
 		});
 		
-    this.get('#/:id', function(){
-			$.get("/posts/"+this.params['id']+".js",function(response){
-				$("#home").append(response);
+    this.get('#/:model', function(){
+			var model = this.params['model'];
+			$.get("/"+model+".js",function(response){
+				$("#left").html(response);
 			});
     });
     
     this.bind('run', function(){
-      // 'run' is one of the custom events that you can bind to within a
-      // Sammy application.  Use it to set up your application.  I use it to
-      // bind forms with jQuery form, setup common behaviors, etc.
-      var context = this;
+      $("home").html('');
     });
   });
 
   $(function() {
-    // When the application runs, the #/ route will be executed
-    app.run('#/');
+    app.run('#/posts');
   });
 })(jQuery);
